@@ -13,11 +13,11 @@ class Dataset(torch.utils.data.Dataset):
         self.data_dir = data_dir
         self.transform = transform
 
-        # 텐서 변환
+        # 텐서 변환 과정
         self.to_tensor = ToTensor()
 
         lst_data = os.listdir(self.data_dir)
-        lst_data = [f for f in lst_data if f.endswith('jpg') | f.endswith('png') | f.endswith('jpeg')]
+        lst_data = [f for f in lst_data if f.endswith('jpg') | f.endswith('png') | f.endswith('jpeg')] # 확장자 분류
 
         lst_data.sort()
 
