@@ -26,3 +26,17 @@ input으로 100 x 1의 noise vector를 사용하여 Project and reshape라는 la
 ![](https://images.velog.io/images/sanha9999/post/c2db8544-423c-4878-b963-a865332e9d5f/image.png)<center><h6>판별자의 구조</h6></center>
 
 판별자는 input으로 64 x 64 크기의 이미지를 받아 마지막 sigmoid로 1 or 0의 1차원 결과를 출력한다. 활성화 함수는 위에서 언급했던 것 처럼 LeakyReLU를 사용하는데, ReLU와 다른 점은 LeakyReLU는 음수영역에서 약간의 기울기를 갖는 값을 출력한다는 점이 다르다.
+
+## 결과
+
+![](https://images.velog.io/images/sanha9999/post/86e488ea-d303-41c3-aefc-ad943af3782b/image.png)
+
+논문에서 이미지에 대해 별도의 전처리를 하지 않고 -1, 1의 범위로 scaling하여 사용하였다고 한다. 위의 사진은 침실 사진을 생성해낸 것인데, 꽤 그럴듯한 결과가 나온 것을 알 수 있다. 특히, z의 값을 변화시켜 얻은 마지막줄 이미지는 TV가 벽면에 붙어있는 사진이 창문이 달린 사진으로 바뀐 것을 알 수 있다.
+
+![](https://images.velog.io/images/sanha9999/post/18d75fd2-70cb-4eba-93ec-21504aec4b11/image.png)
+
+위의 사진은 Discriminator의 feature을 시각화하여 나온 사진이다. 사진을 보면 filter들이 침실의 일부분을 학습했다는 사실을 알 수 있다.
+
+![](https://images.velog.io/images/sanha9999/post/29817b36-a4e3-4dce-a5a3-9977dd861052/image.png)
+
+재밌는 사실은, 학습을 통해서 얻어진 z값을 이용하여 위의 그림처럼 새로운 사진을 생성할 수 있다는 것이다. 안경을 쓴 남자 - 안경을 안 쓴 남자 + 안경을 안 쓴 여자 = 안경을 쓴 여자 가 되는 것이다.
