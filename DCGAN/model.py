@@ -18,8 +18,8 @@ batch_size = 128
 image_size = 64
 nc = 3 # Number of channels
 nz = 100 # Size of z latent vector 그 input 있잖어~
-ngf = 64 # Size of feature
-
+ngf = 64 # Size of feature maps in generator
+ndf = 64 # Suze if feature maps in discriminator
 
 def weights_init(m):
     classname = m.__class__.__name__
@@ -54,6 +54,35 @@ class Generator(nn.Module):
             nn.ConvTranspose2d( ngf, nc, 4, 2, 1, bias=False),
             nn.Tanh()
             # state size. (nc) x 64 x 64
+        )
+
+    def forward(self, input):
+        return self.main(input)
+
+
+class Discriminator(nn.Module):
+    def __init__(self, ngpu):
+        super(Discriminator, self).__init__()
+        self.ngpu = ngpu
+        self.main = nn.Sequential(
+            # input is (nc) x 64 x 64
+            nn.Conv2d(nc, ndf, 4, 2, 1, bias=False),
+            nn.LeakyReLU(0.2, inplace=True),
+            # state size. (ndf) x 32 x 32
+            nn.Conv2d(ndf, ndf * 2, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(ndf * 2),
+            nn.LeakyReLU(0.2, inplace=True),
+            # state size. (ndf*2) x 16 x 16
+            nn.Conv2d(ndf * 2, ndf * 4, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(ndf * 4),
+            nn.LeakyReLU(0.2, inplace=True),
+            # state size. (ndf*4) x 8 x 8
+            nn.Conv2d(ndf * 4, ndf * 8, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(ndf * 8),
+            nn.LeakyReLU(0.2, inplace=True),
+            # state size. (ndf*8) x 4 x 4
+            nn.Conv2d(ndf * 8, 1, 4, 1, 0, bias=False),
+            nn.Sigmoid()
         )
 
     def forward(self, input):
